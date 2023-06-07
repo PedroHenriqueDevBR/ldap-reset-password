@@ -60,11 +60,13 @@ DATABASES = {
 }
 
 # AD Connection details
-AD_URL = ""
-AD_PORT = 0
-AD_BASE = ""
-AD_SERVICE_USERNAME = ""
-AD_SERVICE_PASSWORD = ""
+LDAP_URL = ""
+LDAP_PORT = 0
+LDAP_BASE = ""
+LDAP_DOMAIN = ""
+LDAP_LOGON_DOMAIN_NAME = ""
+LDAP_SERVICE_USERNAME = ""
+LDAP_SERVICE_PASSWORD = ""
 
 # Password validation
 n1 = "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
