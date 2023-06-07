@@ -124,7 +124,7 @@
     }
 }
 
-.login_content {
+.password_form_content {
     width: 405px;
 }
 
@@ -146,9 +146,9 @@
 }
 
 
-/* Login */
+/* Password */
 
-.login_container {
+.password_container {
     width: 100%;
     min-height: 100vh;
     display: flex;

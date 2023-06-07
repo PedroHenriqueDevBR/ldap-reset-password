@@ -59,13 +59,17 @@ DATABASES = {
     }
 }
 
+# App metadata
+ENTERPRISE_NAME = ""
+
 # AD Connection details
 LDAP_URL = ""
 LDAP_PORT = 0
 LDAP_BASE = ""
 LDAP_DOMAIN = ""
 LDAP_LOGON_DOMAIN_NAME = ""
-LDAP_SERVICE_USERNAME = ""
+LDAP_SERVICE_BIND_DN = ""
+LDAP_SERVICE_SAM_ACCOUNT_NAME = ""
 LDAP_SERVICE_PASSWORD = ""
 
 # Password validation

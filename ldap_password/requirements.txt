@@ -14,6 +14,7 @@ psycopg2==2.9.6
 psycopg2-binary==2.9.6
 pyasn1==0.5.0
 pycodestyle==2.10.0
+pycryptodome==3.18.0
 pyflakes==3.0.1
 pytest==7.3.1
 pytest-cov==4.1.0

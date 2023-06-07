@@ -11,19 +11,19 @@ class SearchLDAPUser:
         self.ldap_port = settings.LDAP_PORT
         self.ldap_base = settings.LDAP_BASE
         self.ldap_domain = settings.LDAP_DOMAIN
-        self.ldap_username = settings.LDAP_SERVICE_USERNAME
+        self.ldap_username = settings.LDAP_SERVICE_BIND_DN
         self.ldap_password = settings.LDAP_SERVICE_PASSWORD
 
-    def get_user_principal_name(self, username):
+    def _get_user_principal_name(self, username):
         if "@" in username:
             return username
         return f"{username}@{self.ldap_domain}"
 
-    def ldap(self, username):
+    def search(self, username) -> str:
         try:
             ldap_server_uri = f"{self.ldap_url}:{self.ldap_port}"
             ldap_server = Server(ldap_server_uri, get_info=ALL)
-            user_search = self.get_user_principal_name(username=username)
+            user_search = self._get_user_principal_name(username=username)
 
             ldap_connection = Connection(
                 ldap_server,
@@ -48,9 +48,10 @@ class SearchLDAPUser:
                     ldap_connection.unbind()
                     data = json.loads(json_data)
                     user_dn = data["dn"]
-                    return user_dn
+                    return str(user_dn)
                 else:
-                    return None
+                    print("Unabled to connect to the LDAP server!")
+                    return "Unabled to connect to the LDAP server"
         except LDAPSocketOpenError:
             print("Unabled to connect to the LDAP server!")
-            return None
+            return "Unabled to connect to the LDAP server"
