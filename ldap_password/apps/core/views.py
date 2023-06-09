@@ -117,3 +117,11 @@ class PasswordView(View):
                 )
                 is_valid = False
         return is_valid
+
+
+class RequestMailView(View):
+    def get(self, request):
+        enterprise_name = settings.ENTERPRISE_NAME
+        template_name = "mail.html"
+        context = {"enterprise_name": enterprise_name}
+        return render(request, template_name, context)

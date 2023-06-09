@@ -12,42 +12,37 @@
             <img src="{% static 'images/logo.png' %}" width="50">
             <div class="title">
                 <h4>{{ enterprise_name }}</h4>
-                <p>Inform your credentials</p>
+                <p>Inform your username</p>
             </div>
         </div>
-        
+
         <hr>
 
         <form method="post">
             {% csrf_token %}
             <div class="float-left">
+                
+                {% if token is None %}
                 <div class="mb-3">
-                    <label for="username" class="form-label">username</label>
+                    <label for="username" class="form-label">Username</label>
                     <input type="text" class="form-control" id="username" name="username" aria-describedby="username" value="{{ username }}">
                 </div>
+                {% else %}
                 <div class="mb-3">
-                    <label for="current_password" class="form-label">Current password</label>
-                    <input type="password" class="form-control" id="current_password" name="current_password" aria-describedby="current_password" value="{{ current_password }}">
+                    <label class="form-label">Username</label>
+                    <input type="text" class="form-control" aria-describedby="username" value="{{ username }}" readonly>
                 </div>
+                
                 <div class="mb-3">
-                    <label for="new_password" class="form-label">New password</label>
-                    <input type="password" class="form-control" id="new_password" name="new_password" aria-describedby="new_password" value="{{ new_password }}">
+                    <label for="token" class="form-label">Token</label>
+                    <input type="text" class="form-control" id="token" name="token" aria-describedby="token">
                 </div>
-                <div class="mb-3">
-                    <label for="repeate_password" class="form-label">Repeat password</label>
-                    <input type="password" class="form-control" id="repeate_password" name="repeate_password" aria-describedby="repeate_password" value="{{ repeate_password }}">
-                </div>
+                {% endif %}
             </div>
             
-            <div><button class="btn btn-outline-success full-width">Submit</button></div>
+            <div><button class="btn button-color full-width">Submit</button></div>
             
             <div class="clearfix"></div>
-            
-            <div class="separator" style="width: 100%; text-align: center;">
-                <div class="clearfix"></div>
-                <br />
-            </div>
-            <a href="{% url 'mail' %}" class="btn btn-outline-danger full-width">Did you forget your password?</a>
         </form>
 
         {% if messages %}

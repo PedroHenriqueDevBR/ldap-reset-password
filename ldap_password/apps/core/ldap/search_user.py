@@ -48,6 +48,7 @@ class SearchLDAPUser:
             search_scope=SUBTREE,
             attributes=[
                 "uid",
+                "mail",
             ],
         )
 
@@ -88,6 +89,7 @@ class SearchLDAPUser:
             response = self._search(username=username)
             if response is None:
                 raise IndexError
+
             user_dn = response["dn"]
             return str(user_dn)
         except IndexError:
@@ -102,8 +104,17 @@ class SearchLDAPUser:
             response = self._search(username=username)
             if response is None:
                 raise IndexError
-            mail = response["mail"]
-            return str(mail)
+
+            attrs = response["attributes"]
+            if "mail" in attrs:
+                mail = attrs["mail"]
+                if len(mail) > 0:
+                    return mail[0]
+
+            raise AttributeError
+        except AttributeError:
+            return "Mail not registered to user, contact your \
+                    system administrator"
         except IndexError:
             return f"{username} Not found!"
         except ConnectionError:
