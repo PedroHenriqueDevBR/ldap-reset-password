@@ -32,19 +32,7 @@ class PasswordView(View):
             context["repeate_password"] = data.get("repeate_password")
             return render(request, template_name, context)
 
-        if self.change_ldap_password(request, data):
-            messages.add_message(
-                request,
-                messages.SUCCESS,
-                "Updated password!",
-            )
-        else:
-            messages.add_message(
-                request,
-                messages.SUCCESS,
-                "Error on update password!",
-            )
-
+        self.change_ldap_password(request, data)
         return redirect("password")
 
     def change_ldap_password(self, request, data):
@@ -125,3 +113,40 @@ class RequestMailView(View):
         template_name = "mail.html"
         context = {"enterprise_name": enterprise_name}
         return render(request, template_name, context)
+
+    def post(self, request):
+        template_name = "mail.html"
+        enterprise_name = settings.ENTERPRISE_NAME
+
+        data = request.POST
+        if not self.validate_username(request, data):
+            context = {}
+            messages.add_message(
+                request,
+                messages.ERROR,
+                "Username is required",
+            )
+            context["enterprise_name"] = enterprise_name
+            return render(request, template_name, context)
+
+        return redirect("password")
+
+    def validate_username(self, request, data):
+        username = data.get("username")
+        token = data.get("token")
+        has_username = username is not None and len(username) > 0
+        has_token = token is not None and token > 0
+
+        if not has_username or has_token:
+            return False
+
+        return True
+
+    def validate_token(self, request, data):
+        token = data.get("token")
+        has_token = token is not None and token > 0
+
+        if not has_token:
+            return False
+
+        return True
