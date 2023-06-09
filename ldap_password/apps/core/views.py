@@ -53,7 +53,7 @@ class PasswordView(View):
         new_password = data.get("new_password")
         # Get user DN
         ldap_search = SearchLDAPUser()
-        response = ldap_search.search(username=username)
+        response = ldap_search.search_user_dn_by_username(username=username)
 
         if "CN" not in response:
             messages.add_message(request, messages.SUCCESS, str(response))
