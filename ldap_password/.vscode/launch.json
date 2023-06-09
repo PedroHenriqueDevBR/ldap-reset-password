@@ -9,11 +9,9 @@
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/manage.py",
-            "pythonArgs": [
-                "settings=ldap_password.settings.dev"
-            ],
             "args": [
-                "runserver"
+                "runserver",
+                "--settings=ldap_password.settings.dev"
             ],
             "django": true,
             "justMyCode": true
