@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_NAME=postgres
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000 --settings=ldap_password.settings.prod
+    volumes:
+      - .:/code
+    environment:
+      - APP_SECRET_KEY=${APP_SECRET_KEY}
+      - ENTERPRISE_NAME=${ENTERPRISE_NAME}
+      # Database
+      - POSTGRES_NAME=${DB_DATABASE_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_HOST=${DB_HOST}
+      - POSTGRES_PORT=${DB_HOST}
+      # LDAP
+      - LDAP_URL=${LDAP_URL}
+      - LDAP_PORT=${LDAP_PORT}
+      - LDAP_BASE=${LDAP_BASE}
+      - LDAP_DOMAIN=${LDAP_DOMAIN}
+      - LDAP_LOGON_DOMAIN_NAME=${LDAP_LOGON_DOMAIN_NAME}
+      - LDAP_SERVICE_BIND_DN=${LDAP_SERVICE_BIND_DN}
+      - LDAP_SERVICE_SAM_ACCOUNT_NAME=${LDAP_SERVICE_SAM_ACCOUNT_NAME}
+      - LDAP_SERVICE_PASSWORD=${LDAP_SERVICE_PASSWORD}
+      # Email
+      - EMAIL_HOST=${EMAIL_HOST}
+      - EMAIL_PORT=${EMAIL_PORT}
+      - EMAIL_DEFAULT_FROM=${EMAIL_DEFAULT_FROM}
+      - EMAIL_HOST_USER=${EMAIL_HOST_USER}
+      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
+      - EMAIL_USE_TLS=${EMAIL_USE_TLS}
+    ports:
+      - "8000:8000"
+    links:
+      - db
+    depends_on:
+      - db

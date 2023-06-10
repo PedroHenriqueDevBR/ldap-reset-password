@@ -5,7 +5,7 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = ""
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     # Django libs
@@ -72,8 +72,12 @@ LDAP_SERVICE_BIND_DN = ""
 LDAP_SERVICE_SAM_ACCOUNT_NAME = ""
 LDAP_SERVICE_PASSWORD = ""
 
-# Mail
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = 60 * 5  # 5 minutes
+SESSION_SAVE_EVERY_REQUEST = True
 
+
+# Mail
 EMAIL_HOST = ""
 EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = ""
