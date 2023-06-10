@@ -1,24 +1,28 @@
-from django.shortcuts import render, redirect
-from django.views import View
+from uuid import uuid4
+
 from django.conf import settings
 from django.contrib import messages
+from django.http import HttpRequest, QueryDict
+from django.shortcuts import redirect, render
+from django.views import View
 
-from apps.core.ldap.search_user import SearchLDAPUser
-from apps.core.ldap.change_password import ADResetPass
+from apps.core.services.ldap.change_password import ADResetPass
+from apps.core.services.ldap.search_user import SearchLDAPUser
+from apps.core.services.mail.send_mail import MailService
 
 
-def index(request):
+def index(request: HttpRequest):
     return redirect("password")
 
 
 class PasswordView(View):
-    def get(self, request):
+    def get(self, request: HttpRequest):
         enterprise_name = settings.ENTERPRISE_NAME
         template_name = "password.html"
         context = {"enterprise_name": enterprise_name}
         return render(request, template_name, context)
 
-    def post(self, request):
+    def post(self, request: HttpRequest):
         template_name = "password.html"
         enterprise_name = settings.ENTERPRISE_NAME
 
@@ -35,16 +39,16 @@ class PasswordView(View):
         self.change_ldap_password(request, data)
         return redirect("password")
 
-    def change_ldap_password(self, request, data):
-        username = data.get("username")
-        current_password = data.get("current_password")
-        new_password = data.get("new_password")
+    def change_ldap_password(self, request: HttpRequest, data: QueryDict):
+        username = data.get("username") or ""
+        current_password = data.get("current_password") or ""
+        new_password = data.get("new_password") or ""
         # Get user DN
         ldap_search = SearchLDAPUser()
         response = ldap_search.search_user_dn_by_username(username=username)
 
         if "CN" not in response:
-            messages.add_message(request, messages.SUCCESS, str(response))
+            messages.add_message(request, messages.SUCCESS, response)
             return False
 
         user_dn = response
@@ -61,7 +65,7 @@ class PasswordView(View):
 
         return True
 
-    def validate_data(self, request, data):
+    def validate_data(self, request: HttpRequest, data: QueryDict):
         username = data.get("username")
         current_password = data.get("current_password")
         new_password = data.get("new_password")
@@ -108,18 +112,19 @@ class PasswordView(View):
 
 
 class RequestMailView(View):
-    def get(self, request):
+    def get(self, request: HttpRequest):
         enterprise_name = settings.ENTERPRISE_NAME
         template_name = "mail.html"
         context = {"enterprise_name": enterprise_name}
         return render(request, template_name, context)
 
-    def post(self, request):
+    def post(self, request: HttpRequest):
         template_name = "mail.html"
         enterprise_name = settings.ENTERPRISE_NAME
-
         data = request.POST
-        if not self.validate_username(request, data):
+        username = data.get("username") or ""
+
+        if not self.validate_username(username=username):
             context = {}
             messages.add_message(
                 request,
@@ -129,24 +134,24 @@ class RequestMailView(View):
             context["enterprise_name"] = enterprise_name
             return render(request, template_name, context)
 
-        return redirect("password")
+        self.send_token_to_mail(request=request, username=username)
+        return redirect("mail")
 
-    def validate_username(self, request, data):
-        username = data.get("username")
-        token = data.get("token")
+    def validate_username(self, username: str) -> bool:
         has_username = username is not None and len(username) > 0
-        has_token = token is not None and token > 0
+        return has_username
 
-        if not has_username or has_token:
+    def send_token_to_mail(self, request: HttpRequest, username: str):
+        ldap_search = SearchLDAPUser()
+        mail_response = ldap_search.search_mail_by_username(username=username)
+
+        if "@" not in mail_response:
+            messages.add_message(request, messages.WARNING, mail_response)
             return False
 
-        return True
-
-    def validate_token(self, request, data):
-        token = data.get("token")
-        has_token = token is not None and token > 0
-
-        if not has_token:
-            return False
+        token = str(uuid4())
+        mail_service = MailService()
+        mail_service.send_mail(to=mail_response, token=token)
+        request.session["token"] = token
 
         return True

@@ -18,7 +18,7 @@ class SearchLDAPUser:
         self.ldap_username = settings.LDAP_SERVICE_SAM_ACCOUNT_NAME
         self.ldap_password = settings.LDAP_SERVICE_PASSWORD
 
-    def _get_user_principal_name(self, username):
+    def _get_user_principal_name(self, username: str) -> str:
         if "@" in username:
             return username
         return f"{username}@{self.ldap_domain}"
@@ -39,7 +39,7 @@ class SearchLDAPUser:
         self.ldap.user = f"{self.ldap_logon_domain}\\{self.ldap_username}"
         self.ldap.password = self.ldap_password
 
-    def _execute_search(self, user):
+    def _execute_search(self, user: str) -> bool:
         if self.ldap is None:
             return False
         return self.ldap.search(
@@ -52,7 +52,7 @@ class SearchLDAPUser:
             ],
         )
 
-    def _search(self, username) -> Optional[dict]:
+    def _search(self, username: str) -> Optional[dict]:
         try:
             self._get_connection()
             user_search = self._get_user_principal_name(username=username)
@@ -84,7 +84,7 @@ class SearchLDAPUser:
             if self.ldap is not None:
                 self.ldap.unbind()
 
-    def search_user_dn_by_username(self, username) -> str:
+    def search_user_dn_by_username(self, username: str) -> str:
         try:
             response = self._search(username=username)
             if response is None:
@@ -99,7 +99,7 @@ class SearchLDAPUser:
         except LDAPSocketOpenError:
             return "Can not connect to the LDAP server!"
 
-    def search_mail_by_username(self, username) -> str:
+    def search_mail_by_username(self, username: str) -> str:
         try:
             response = self._search(username=username)
             if response is None:
