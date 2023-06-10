@@ -18,7 +18,6 @@ class ADResetPass:
         user_dn: str,
         new_password: str,
         old_password: Optional[str] = None,
-        request_old_pass=True,
     ) -> str:
         self._get_connection()
         self._auth_service_ldap_user()
@@ -26,17 +25,11 @@ class ADResetPass:
         if self.connection is None:
             return "LDAP Connection is empty."
 
-        if request_old_pass:
-            response = self.connection.extend.microsoft.modify_password(
-                user_dn,
-                new_password,
-                old_password=old_password,
-            )
-        else:
-            response = self.connection.extend.microsoft.modify_password(
-                user_dn,
-                new_password,
-            )
+        response = self.connection.extend.microsoft.modify_password(
+            user_dn,
+            new_password,
+            old_password=old_password,
+        )
 
         if not response:
             return "Rejected password update"

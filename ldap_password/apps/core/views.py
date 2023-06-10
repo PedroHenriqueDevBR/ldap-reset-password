@@ -264,7 +264,6 @@ class ConfirmTokenView(View):
         error_message = ad_reset_pass.reset_password(
             user_dn=user_dn,
             new_password=password,
-            request_old_pass=False,
         )
 
         if error_message != "":
