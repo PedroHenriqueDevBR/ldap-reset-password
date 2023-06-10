@@ -1,0 +1,222 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+
+:root {
+    --background: #EBF2FA;
+    --primary: #001d3d;
+    --primary-hover: #011429;
+    --secondary: #419a45;
+    --divider: #CCCCCC;
+    --danger: #EF5350;
+    --button-color: var(--secondary);
+    --button-color-hover: #008000;
+    --button-danger: var(--danger);
+    --button-danger-hover: #ab2836;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: 'Roboto', "Helvetica Neue", Arial, "Droid Sans", sans-serif;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.full-height {
+    height: 100%;
+}
+
+.full-height-vh {
+    height: calc(100vh - 55px);
+}
+
+.primary-color {
+    background-color: var(--primary);
+}
+
+.primary-color-text {
+    color: var(--primary);
+}
+
+.secondary-color {
+    background-color: var(--secondary);
+}
+
+.secondary-color-text {
+    color: var(--secondary);
+}
+
+.button-color {
+    background-color: var(--button-color);
+    color: #fff;
+    transition: 200ms;
+}
+
+.button-color:hover {
+    background-color: var(--button-color-hover);
+    color: #fff;
+}
+
+.button-color-primary {
+    background-color: var(--primary);
+    color: #fff;
+    transition: 200ms;
+}
+
+.button-color-primary:hover {
+    background-color: var(--primary);
+    color: #fff;
+}
+
+.button-danger {
+    background-color: var(--button-danger);
+    color: #fff;
+    transition: 200ms;
+}
+
+.button-danger:hover {
+    background-color: var(--button-danger-hover);
+    color: #fff;
+}
+
+.vertical-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+    background-color: var(--primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+
+.logo-error-page {
+    margin-bottom: 25px;
+}
+
+.d-flex-space-between {
+    display: flex;
+    justify-content: space-between;
+}
+
+.page-content {
+    margin-top: 75px;
+}
+
+.container-pedido {
+    height: calc(100vh - 135px);
+}
+
+.fill-width {
+    width: -webkit-fill-available;
+}
+
+@media only screen and (max-width: 600px) {
+    .hide-sm {
+        display: none;
+    }
+}
+
+.password_form_content {
+    width: 405px;
+}
+
+
+
+#errorMsg ol {
+    padding: 0;
+    list-style: none;
+}
+
+#errorMsg li {
+    position: relative;
+    padding: 1rem 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.25rem;
+    color: #842029;
+    background-color: #f8d7da;
+    border-color: #f5c2c7;
+}
+
+
+/* Password */
+
+.password_container {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* Index */
+
+.carousel-inner {
+    height: auto !important;
+}
+
+.carousel-item img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+/* Password */
+
+input {
+    width: 100%;
+    padding: 6px 12px !important;
+    margin: 10px 0;
+}
+
+form>label {
+    display: none;
+}
+
+.float-left {
+    text-align: left;
+}
+
+.password_container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.background_dpe {
+    background-color: #dcedc8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+}
+
+.header .title {
+    margin-left: 12px;
+    margin-top: auto;
+}
+
+.header .title * {
+    margin: 0 !important;
+}
+
+@media only screen and (max-width: 500px) {
+    .password_form_content {
+        height: auto;
+        width: 100%;
+        height: 100vh;
+        margin: 0 !important;
+        padding: 16px !important;
+    }
+}
