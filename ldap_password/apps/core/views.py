@@ -62,6 +62,11 @@ class PasswordView(View):
             messages.add_message(request, messages.ERROR, error_message)
             return False
 
+        messages.add_message(
+            request,
+            messages.ERROR,
+            "Successfully updated password",
+        )
         return True
 
     def validate_data(self, request: HttpRequest, data: QueryDict):
@@ -212,7 +217,10 @@ class ConfirmTokenView(View):
         uuid = str(uuid4())
         password = uuid.replace("-", "")
         if len(password) > 12:
-            return password[0:12]
+            left = password[0:6]
+            right = password[6:11]
+            password = left + "@" + right
+            return password
         return password
 
     def send_password_to_mail(
