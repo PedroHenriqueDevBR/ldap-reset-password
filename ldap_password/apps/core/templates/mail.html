@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}Entrar{% endblock title %}
+
+{% block body %}
+
+<div class="password_container background_dpe">
+    <section class="password_form_content bg-white px-5 py-4 my-4 rounded shadow">
+        <div class="header">
+            <img src="{% static 'images/logo.png' %}" width="50">
+            <div class="title">
+                <h4>{{ enterprise_name }}</h4>
+                <p>Inform your username</p>
+            </div>
+        </div>
+
+        <hr>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="float-left">
+                
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username" name="username" aria-describedby="username" value="{{ username }}">
+                </div>
+            </div>
+            
+            <div><button class="btn button-color full-width">Submit</button></div>
+            
+            <div class="clearfix"></div>
+        </form>
+
+        {% if messages %}
+        <div class="m-0">
+            <ul class="messages m-0" style="padding-left: 0;">
+                {% for message in messages %}
+                <div class="alert alert-success" role="alert">{{ message }}</div>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </section>
+</div>
+{% endblock body %}

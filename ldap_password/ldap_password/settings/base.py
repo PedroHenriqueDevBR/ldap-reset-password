@@ -72,6 +72,16 @@ LDAP_SERVICE_BIND_DN = ""
 LDAP_SERVICE_SAM_ACCOUNT_NAME = ""
 LDAP_SERVICE_PASSWORD = ""
 
+# Mail
+
+EMAIL_HOST = ""
+EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = ""
+EMAIL_HOST_USER = ""
+EMAIL_HOST_PASSWORD = ""
+EMAIL_USE_TLS = True
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
 # Password validation
 n1 = "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
 n2 = "django.contrib.auth.password_validation.MinimumLengthValidator"
