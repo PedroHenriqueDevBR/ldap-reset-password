@@ -1,3 +1,4 @@
+from typing import Optional
 from django.conf import settings
 import ldap3
 
@@ -12,20 +13,33 @@ class ADResetPass:
         self.ldap_password = settings.LDAP_SERVICE_PASSWORD
         self.ldap_logon_domain_name = settings.LDAP_LOGON_DOMAIN_NAME
 
-    def reset_password(self, user_dn, new_password, old_password) -> str:
+    def reset_password(
+        self,
+        user_dn: str,
+        new_password: str,
+        old_password: Optional[str] = None,
+        request_old_pass=True,
+    ) -> str:
         self._get_connection()
         self._auth_service_ldap_user()
 
         if self.connection is None:
             return "LDAP Connection is empty."
 
-        response = self.connection.extend.microsoft.modify_password(
-            user_dn,
-            new_password,
-            old_password=old_password,
-        )
+        if request_old_pass:
+            response = self.connection.extend.microsoft.modify_password(
+                user_dn,
+                new_password,
+                old_password=old_password,
+            )
+        else:
+            response = self.connection.extend.microsoft.modify_password(
+                user_dn,
+                new_password,
+            )
+
         if not response:
-            return "Current password is incorrect."
+            return "Rejected password update"
 
         return ""
 

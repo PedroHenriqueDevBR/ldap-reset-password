@@ -43,7 +43,6 @@ class PasswordView(View):
         username = data.get("username") or ""
         current_password = data.get("current_password") or ""
         new_password = data.get("new_password") or ""
-        # Get user DN
         ldap_search = SearchLDAPUser()
         response = ldap_search.search_user_dn_by_username(username=username)
 
@@ -113,6 +112,7 @@ class PasswordView(View):
 
 class RequestMailView(View):
     def get(self, request: HttpRequest):
+        self.clear_session_data(request)
         enterprise_name = settings.ENTERPRISE_NAME
         template_name = "mail.html"
         context = {"enterprise_name": enterprise_name}
@@ -134,8 +134,14 @@ class RequestMailView(View):
             context["enterprise_name"] = enterprise_name
             return render(request, template_name, context)
 
-        self.send_token_to_mail(request=request, username=username)
-        return redirect("mail")
+        mail_response = self.send_token_to_mail(
+            request=request,
+            username=username,
+        )
+        if not mail_response:
+            return redirect("mail")
+
+        return redirect("token")
 
     def validate_username(self, username: str) -> bool:
         has_username = username is not None and len(username) > 0
@@ -151,7 +157,118 @@ class RequestMailView(View):
 
         token = str(uuid4())
         mail_service = MailService()
-        mail_service.send_mail(to=mail_response, token=token)
+        mail_service.send_token(to=mail_response, token=token)
+
         request.session["token"] = token
+        request.session["username"] = username
+        messages.add_message(
+            request,
+            messages.SUCCESS,
+            "The token has been sent to your e-mail",
+        )
+        return True
+
+    def clear_session_data(self, request: HttpRequest):
+        request.session.clear()
+
+
+class ConfirmTokenView(View):
+    def get(self, request: HttpRequest):
+        enterprise_name = settings.ENTERPRISE_NAME
+        template_name = "token.html"
+        username = request.session.get("username") or ""
+        if len(username) == 0:
+            return redirect("mail")
+        context = {
+            "enterprise_name": enterprise_name,
+            "username": username,
+        }
+        return render(request, template_name, context)
+
+    def post(self, request: HttpRequest):
+        data = request.POST
+        received_token = data.get("token") or ""
+        username = request.session.get("username") or ""
+        new_password = self.get_new_password()
+
+        if not self.validate_token(request, received_token, username):
+            return redirect("token")
+
+        if not self.update_user_password(request, username, new_password):
+            return redirect("token")
+
+        if not self.send_password_to_mail(request, username, new_password):
+            return redirect("token")
+
+        messages.add_message(
+            request,
+            messages.SUCCESS,
+            "Your new password has been sent to your e-mail",
+        )
+
+        return redirect("password")
+
+    def get_new_password(self):
+        uuid = str(uuid4())
+        return uuid.replace("-", "")
+
+    def send_password_to_mail(
+        self,
+        request: HttpRequest,
+        username: str,
+        password: str,
+    ):
+        ldap_search = SearchLDAPUser()
+        mail_response = ldap_search.search_mail_by_username(username=username)
+
+        if "@" not in mail_response:
+            messages.add_message(request, messages.WARNING, mail_response)
+            return False
+
+        mail_service = MailService()
+        mail_service.send_password(to=mail_response, password=password)
+        return True
+
+    def validate_token(
+        self, request: HttpRequest, received: str, username: str
+    ) -> bool:
+        saved_token = request.session.get("token") or ""
+        has_received_token = len(received) > 0
+        has_saved_token = len(saved_token) > 0
+        has_usernme = len(username) > 0
+
+        if not has_received_token or not has_saved_token or not has_usernme:
+            messages.add_message(
+                request,
+                messages.ERROR,
+                "Invalid Token",
+            )
+            return False
+
+        return received == saved_token
+
+    def update_user_password(
+        self,
+        request: HttpRequest,
+        username: str,
+        password: str,
+    ) -> bool:
+        ldap_search = SearchLDAPUser()
+        user_dn = ldap_search.search_user_dn_by_username(username=username)
+
+        if "CN" not in user_dn:
+            messages.add_message(request, messages.SUCCESS, user_dn)
+            return False
+
+        ad_reset_pass = ADResetPass()
+        error_message = ad_reset_pass.reset_password(
+            user_dn=user_dn,
+            new_password=password,
+            request_old_pass=False,
+        )
+
+        if error_message != "":
+            messages.add_message(request, messages.ERROR, error_message)
+            return False
 
         return True

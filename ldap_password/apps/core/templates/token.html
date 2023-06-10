@@ -12,7 +12,7 @@
             <img src="{% static 'images/logo.png' %}" width="50">
             <div class="title">
                 <h4>{{ enterprise_name }}</h4>
-                <p>Inform your username</p>
+                <p>Received token</p>
             </div>
         </div>
 
@@ -23,8 +23,13 @@
             <div class="float-left">
                 
                 <div class="mb-3">
-                    <label for="username" class="form-label">Username</label>
-                    <input type="text" class="form-control" id="username" name="username" aria-describedby="username" value="{{ username }}">
+                    <label class="form-label">Username</label>
+                    <input type="text" class="form-control" aria-describedby="username" value="{{ username }}" readonly>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="token" class="form-label">Token</label>
+                    <input type="text" class="form-control" id="token" name="token" aria-describedby="token">
                 </div>
             </div>
             
