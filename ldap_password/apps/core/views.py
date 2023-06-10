@@ -210,7 +210,10 @@ class ConfirmTokenView(View):
 
     def get_new_password(self):
         uuid = str(uuid4())
-        return uuid.replace("-", "")
+        password = uuid.replace("-", "")
+        if len(password) > 12:
+            return password[0:12]
+        return password
 
     def send_password_to_mail(
         self,
