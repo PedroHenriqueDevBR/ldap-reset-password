@@ -1,8 +1,9 @@
 import json
 from typing import Optional
 
-from django.conf import settings
 import ldap3
+from django.conf import settings
+from django.utils.translation import gettext as _
 from ldap3 import ALL, SUBTREE, Connection, Server
 from ldap3.core.exceptions import LDAPSocketOpenError
 
@@ -93,11 +94,12 @@ class SearchLDAPUser:
             user_dn = response["dn"]
             return str(user_dn)
         except IndexError:
-            return f"{username} Not found!"
+            msg = _("Not found")
+            return f"{username} {msg}!"
         except ConnectionError:
-            return "Can not search user data in LDAP Server!"
+            return _("Can not search user data in LDAP Server")
         except LDAPSocketOpenError:
-            return "Can not connect to the LDAP server!"
+            return _("Can not connect to the LDAP server")
 
     def search_mail_by_username(self, username: str) -> str:
         try:
@@ -113,11 +115,11 @@ class SearchLDAPUser:
 
             raise AttributeError
         except AttributeError:
-            return "Mail not registered to user, contact your \
-                    system administrator"
+            return _("Mail not registered to user")
         except IndexError:
-            return f"{username} Not found!"
+            msg = _("Not found")
+            return f"{username} {msg}!"
         except ConnectionError:
-            return "Can not search user data in LDAP Server!"
+            return _("Can not search user data in LDAP Server")
         except LDAPSocketOpenError:
-            return "Unabled to connect to the LDAP server"
+            return _("Can not connect to the LDAP server")

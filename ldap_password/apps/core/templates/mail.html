@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 {% load static %}
+{% load i18n %}
 
 {% block title %}Entrar{% endblock title %}
 
@@ -12,7 +13,7 @@
             <img src="{% static 'images/logo.png' %}" width="50">
             <div class="title">
                 <h4>{{ enterprise_name }}</h4>
-                <p>Inform your username</p>
+                <p>{% trans "InformYourCredentials" %}</p>
             </div>
         </div>
 
@@ -28,7 +29,7 @@
                 </div>
             </div>
             
-            <div><button class="btn button-color full-width">Submit</button></div>
+            <div><button class="btn button-color full-width">{% trans "Submit" %}</button></div>
             
             <div class="clearfix"></div>
         </form>

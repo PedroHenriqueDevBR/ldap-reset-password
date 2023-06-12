@@ -29,6 +29,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
 ]
 
 ROOT_URLCONF = "ldap_password.urls"
@@ -99,8 +100,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Meta settings
-LANGUAGE_CODE = "pt-br"
-TIME_ZONE = "America/Fortaleza"
+LANGUAGE_CODE = "en-us"
+TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
