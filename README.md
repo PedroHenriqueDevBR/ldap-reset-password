@@ -19,12 +19,28 @@ We need to export the AD certificate and import it into your application server.
 1. Go to your Active Directory server;
 2. Open PowerShell as Administrator;
 3. Run **certmgr.msc** to open certificate list;
+
+![powershell.png](https://raw.githubusercontent.com/PedroHenriqueDevBR/ldap-reset-password/docs/docs/images/powershell.png?token=GHSAT0AAAAAACCSLE6HOW6FLXTO7JOCU7A6ZEIR22Q)
+
 4. To Navigate for certificate list, click in **Trusted Toot Certification Authorities** > **Certificates**;
 5. Select the certificate with same name from your AD server and click with right buttom from mouse;
 6. Click in **All Tasks** > **Export**;
+
+![certificate-list.png](https://raw.githubusercontent.com/PedroHenriqueDevBR/ldap-reset-password/docs/docs/images/certificate-list.png?token=GHSAT0AAAAAACCSLE6G2E5HTFRVQP2JZ7TOZEIR3ZA)
+
 7. Select the **Base-64 encoded X.509 (.CER)** and click next;
+
+![certificate-criptograph.png](https://raw.githubusercontent.com/PedroHenriqueDevBR/ldap-reset-password/docs/docs/images/certificate-criptograph.png?token=GHSAT0AAAAAACCSLE6GL66P6VKROW3VATXAZEIR5AQ)
+
 8. Select a diretory to save and click next;
+
+![select-certificate-save-path.png](https://raw.githubusercontent.com/PedroHenriqueDevBR/ldap-reset-password/docs/docs/images/select-certificate-save-path.png?token=GHSAT0AAAAAACCSLE6GBWQS4XLPNGMGQI24ZEIR5JQ)
+
 9. Click Finish.
+
+![finish.png](https://raw.githubusercontent.com/PedroHenriqueDevBR/ldap-reset-password/docs/docs/images/finish.png?token=GHSAT0AAAAAACCSLE6H6JCRKJD72YLJFSVGZEIR6GA)
+
+![successful.png](https://raw.githubusercontent.com/PedroHenriqueDevBR/ldap-reset-password/docs/docs/images/successful.png?token=GHSAT0AAAAAACCSLE6HWJLJVE6VZBWPR63GZEIR6HA)
 
 ### Linux Server
 
