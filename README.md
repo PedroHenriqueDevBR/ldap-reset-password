@@ -20,7 +20,7 @@ We need to export the AD certificate and import it into your application server.
 2. Open PowerShell as Administrator;
 3. Run **certmgr.msc** to open certificate list;
 
-![powershell.png](https://raw.githubusercontent.com/PedroHenriqueDevBR/ldap-reset-password/docs/docs/images/powershell.png?token=GHSAT0AAAAAACCSLE6HOW6FLXTO7JOCU7A6ZEIR22Q)
+![powershell.png](https://raw.githubusercontent.com/PedroHenriqueDevBR/ldap-reset-password/docs/docs/images/powershell.png?token=GHSAT0AAAAAACCSLE6GLD2LKE6ERPVVAHNOZEISCBA)
 
 4. To Navigate for certificate list, click in **Trusted Toot Certification Authorities** > **Certificates**;
 5. Select the certificate with same name from your AD server and click with right buttom from mouse;
