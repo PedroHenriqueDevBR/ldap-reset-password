@@ -182,6 +182,7 @@ class ConfirmTokenView(View):
         enterprise_name = settings.ENTERPRISE_NAME
         template_name = "token.html"
         username = request.session.get("username") or ""
+
         if len(username) == 0:
             return redirect("mail")
         context = {
