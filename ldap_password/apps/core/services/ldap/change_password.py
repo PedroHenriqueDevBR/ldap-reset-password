@@ -1,6 +1,8 @@
 from typing import Optional
-from django.conf import settings
+
 import ldap3
+from django.conf import settings
+from django.utils.translation import gettext as _
 
 
 class ADResetPass:
@@ -23,7 +25,7 @@ class ADResetPass:
         self._auth_service_ldap_user()
 
         if self.connection is None:
-            return "LDAP Connection is empty."
+            return _("LDAP Connection is empty")
 
         response = self.connection.extend.microsoft.modify_password(
             user_dn,
@@ -32,7 +34,7 @@ class ADResetPass:
         )
 
         if not response:
-            return "Rejected password update"
+            return _("Rejected password update")
 
         return ""
 

@@ -4,6 +4,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.http import HttpRequest, QueryDict
 from django.shortcuts import redirect, render
+from django.utils.translation import gettext as _
 from django.views import View
 
 from apps.core.services.ldap.change_password import ADResetPass
@@ -65,7 +66,7 @@ class PasswordView(View):
         messages.add_message(
             request,
             messages.ERROR,
-            "Successfully updated password",
+            _("Successfully updated password"),
         )
         return True
 
@@ -80,28 +81,28 @@ class PasswordView(View):
             messages.add_message(
                 request,
                 messages.WARNING,
-                "Username is required",
+                _("Username is required"),
             )
             is_valid = False
         if current_password is None or len(current_password) == 0:
             messages.add_message(
                 request,
                 messages.WARNING,
-                "Current password is required",
+                _("Current password is required"),
             )
             is_valid = False
         if new_password is None or len(new_password) == 0:
             messages.add_message(
                 request,
                 messages.WARNING,
-                "New password is required",
+                _("New password is required"),
             )
             is_valid = False
         if repeate_password is None or len(repeate_password) == 0:
             messages.add_message(
                 request,
                 messages.WARNING,
-                "Repeat password is required",
+                _("Repeat password is required"),
             )
             is_valid = False
         if is_valid:
@@ -109,7 +110,7 @@ class PasswordView(View):
                 messages.add_message(
                     request,
                     messages.WARNING,
-                    "Different passwords",
+                    _("Different passwords"),
                 )
                 is_valid = False
         return is_valid
@@ -134,7 +135,7 @@ class RequestMailView(View):
             messages.add_message(
                 request,
                 messages.ERROR,
-                "Username is required",
+                _("Username is required"),
             )
             context["enterprise_name"] = enterprise_name
             return render(request, template_name, context)
@@ -169,7 +170,7 @@ class RequestMailView(View):
         messages.add_message(
             request,
             messages.SUCCESS,
-            "The token has been sent to your e-mail",
+            _("The token has been sent to your e-mail"),
         )
         return True
 
@@ -209,7 +210,7 @@ class ConfirmTokenView(View):
         messages.add_message(
             request,
             messages.SUCCESS,
-            "Your new password has been sent to your e-mail",
+            _("Your new password has been sent to your e-mail"),
         )
 
         return redirect("password")
@@ -253,7 +254,7 @@ class ConfirmTokenView(View):
             messages.add_message(
                 request,
                 messages.ERROR,
-                "Invalid Token",
+                _("Invalid Token"),
             )
             return False
 
