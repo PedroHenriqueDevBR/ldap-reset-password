@@ -26,8 +26,8 @@ class PasswordView(View):
     def post(self, request: HttpRequest):
         template_name = "password.html"
         enterprise_name = settings.ENTERPRISE_NAME
-
         data = request.POST
+
         if not self.validate_data(request, data):
             context = {}
             context["enterprise_name"] = enterprise_name
@@ -39,6 +39,50 @@ class PasswordView(View):
 
         self.change_ldap_password(request, data)
         return redirect("password")
+
+    def password_valid_complexity(self, request: HttpRequest, password: str):
+        is_valid = True
+        has_special_chars = False
+        especial_chars = [
+            "!",
+            "#",
+            "$",
+            "&",
+            "(",
+            ")",
+            "*",
+            "+",
+            "-",
+            "/",
+            ":",
+            ";",
+            "<",
+            "=",
+            ">",
+            "@",
+        ]
+        if len(password) < 8:
+            is_valid = False
+            messages.add_message(
+                request,
+                messages.ERROR,
+                _("minimum 8 characters"),
+            )
+
+        for letter in password:
+            if letter in especial_chars:
+                has_special_chars = True
+                break
+
+        if not has_special_chars:
+            is_valid = False
+            messages.add_message(
+                request,
+                messages.ERROR,
+                _("Use special character"),
+            )
+
+        return is_valid
 
     def change_ldap_password(self, request: HttpRequest, data: QueryDict):
         username = data.get("username") or ""
@@ -113,6 +157,13 @@ class PasswordView(View):
                     _("Different passwords"),
                 )
                 is_valid = False
+
+        if is_valid:
+            is_valid = self.password_valid_complexity(
+                request,
+                new_password or "",
+            )
+
         return is_valid
 
 
