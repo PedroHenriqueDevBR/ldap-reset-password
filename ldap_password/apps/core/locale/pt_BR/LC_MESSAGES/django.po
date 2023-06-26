@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-12 11:38-0500\n"
+"POT-Creation-Date: 2023-06-25 21:50-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -79,37 +79,45 @@ msgid "ReceivedToken"
 msgstr "Token recebido"
 
 #: apps/core/views.py:69
+msgid "minimum 8 characters"
+msgstr "Digite no mímino 8 (oito) caracteres"
+
+#: apps/core/views.py:82
+msgid "Use special character"
+msgstr "Use pelo menos 1 (um) caractere especial"
+
+#: apps/core/views.py:113
 msgid "Successfully updated password"
 msgstr "Sucesso na atualização de senha"
 
-#: apps/core/views.py:84 apps/core/views.py:138
+#: apps/core/views.py:128 apps/core/views.py:189
 msgid "Username is required"
 msgstr "Username obrigatório"
 
-#: apps/core/views.py:91
+#: apps/core/views.py:135
 msgid "Current password is required"
 msgstr "Senha atual obrigatória"
 
-#: apps/core/views.py:98
+#: apps/core/views.py:142
 msgid "New password is required"
 msgstr "Nova senha é obrigatória"
 
-#: apps/core/views.py:105
+#: apps/core/views.py:149
 msgid "Repeat password is required"
 msgstr "Repetir nova senha"
 
-#: apps/core/views.py:113
+#: apps/core/views.py:157
 msgid "Different passwords"
 msgstr "Senha diferentes"
 
-#: apps/core/views.py:173
+#: apps/core/views.py:224
 msgid "The token has been sent to your e-mail"
 msgstr "O token foi enviado para o seu e-mail"
 
-#: apps/core/views.py:212
+#: apps/core/views.py:264
 msgid "Your new password has been sent to your e-mail"
 msgstr "A nova senha foi enviada para o seu e-mail"
 
-#: apps/core/views.py:256
+#: apps/core/views.py:308
 msgid "Invalid Token"
 msgstr "Token inválido"
