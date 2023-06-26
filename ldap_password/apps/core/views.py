@@ -10,6 +10,10 @@ from django.views import View
 from apps.core.services.ldap.change_password import ADResetPass
 from apps.core.services.ldap.search_user import SearchLDAPUser
 from apps.core.services.mail.send_mail import MailService
+from apps.core.validators.validate_password_form import (
+    validate_token_password_data,
+    validate_change_password_data,
+)
 
 
 def index(request: HttpRequest):
@@ -28,7 +32,7 @@ class PasswordView(View):
         enterprise_name = settings.ENTERPRISE_NAME
         data = request.POST
 
-        if not self.validate_data(request, data):
+        if not validate_change_password_data(request, data):
             context = {}
             context["enterprise_name"] = enterprise_name
             context["username"] = data.get("username")
@@ -39,50 +43,6 @@ class PasswordView(View):
 
         self.change_ldap_password(request, data)
         return redirect("password")
-
-    def password_valid_complexity(self, request: HttpRequest, password: str):
-        is_valid = True
-        has_special_chars = False
-        especial_chars = [
-            "!",
-            "#",
-            "$",
-            "&",
-            "(",
-            ")",
-            "*",
-            "+",
-            "-",
-            "/",
-            ":",
-            ";",
-            "<",
-            "=",
-            ">",
-            "@",
-        ]
-        if len(password) < 8:
-            is_valid = False
-            messages.add_message(
-                request,
-                messages.ERROR,
-                _("minimum 8 characters"),
-            )
-
-        for letter in password:
-            if letter in especial_chars:
-                has_special_chars = True
-                break
-
-        if not has_special_chars:
-            is_valid = False
-            messages.add_message(
-                request,
-                messages.ERROR,
-                _("Use special character"),
-            )
-
-        return is_valid
 
     def change_ldap_password(self, request: HttpRequest, data: QueryDict):
         username = data.get("username") or ""
@@ -113,58 +73,6 @@ class PasswordView(View):
             _("Successfully updated password"),
         )
         return True
-
-    def validate_data(self, request: HttpRequest, data: QueryDict):
-        username = data.get("username")
-        current_password = data.get("current_password")
-        new_password = data.get("new_password")
-        repeate_password = data.get("repeate_password")
-        is_valid = True
-
-        if username is None or len(username) == 0:
-            messages.add_message(
-                request,
-                messages.WARNING,
-                _("Username is required"),
-            )
-            is_valid = False
-        if current_password is None or len(current_password) == 0:
-            messages.add_message(
-                request,
-                messages.WARNING,
-                _("Current password is required"),
-            )
-            is_valid = False
-        if new_password is None or len(new_password) == 0:
-            messages.add_message(
-                request,
-                messages.WARNING,
-                _("New password is required"),
-            )
-            is_valid = False
-        if repeate_password is None or len(repeate_password) == 0:
-            messages.add_message(
-                request,
-                messages.WARNING,
-                _("Repeat password is required"),
-            )
-            is_valid = False
-        if is_valid:
-            if new_password != repeate_password:
-                messages.add_message(
-                    request,
-                    messages.WARNING,
-                    _("Different passwords"),
-                )
-                is_valid = False
-
-        if is_valid:
-            is_valid = self.password_valid_complexity(
-                request,
-                new_password or "",
-            )
-
-        return is_valid
 
 
 class RequestMailView(View):
@@ -255,16 +163,7 @@ class ConfirmTokenView(View):
         if not self.update_user_password(request, username, new_password):
             return redirect("token")
 
-        if not self.send_password_to_mail(request, username, new_password):
-            return redirect("token")
-
-        messages.add_message(
-            request,
-            messages.SUCCESS,
-            _("Your new password has been sent to your e-mail"),
-        )
-
-        return redirect("password")
+        return redirect("token_password")
 
     def get_new_password(self):
         uuid = str(uuid4())
@@ -275,23 +174,6 @@ class ConfirmTokenView(View):
             password = left + "@" + right
             return password
         return password
-
-    def send_password_to_mail(
-        self,
-        request: HttpRequest,
-        username: str,
-        password: str,
-    ):
-        ldap_search = SearchLDAPUser()
-        mail_response = ldap_search.search_mail_by_username(username=username)
-
-        if "@" not in mail_response:
-            messages.add_message(request, messages.WARNING, mail_response)
-            return False
-
-        mail_service = MailService()
-        mail_service.send_password(to=mail_response, password=password)
-        return True
 
     def validate_token(
         self, request: HttpRequest, received: str, username: str
@@ -334,4 +216,102 @@ class ConfirmTokenView(View):
             messages.add_message(request, messages.ERROR, error_message)
             return False
 
+        request.session["new_password"] = password
         return True
+
+
+class ChangePasswordToken(View):
+    def get(self, request: HttpRequest):
+        enterprise_name = settings.ENTERPRISE_NAME
+        template_name = "token_password.html"
+        username = request.session.get("username") or ""
+        new_password = request.session.get("new_password") or ""
+        saved_token = request.session.get("token") or ""
+
+        has_saved_token = len(saved_token) > 0
+        has_username = len(username) > 0
+        has_new_password = len(new_password) > 0
+
+        if not has_username or not has_new_password or not has_saved_token:
+            return redirect("mail")
+
+        context = {
+            "enterprise_name": enterprise_name,
+            "username": username,
+        }
+
+        return render(request, template_name, context)
+
+    def post(self, request: HttpRequest):
+        data = request.POST
+        template_name = "token_password.html"
+        enterprise_name = settings.ENTERPRISE_NAME
+        username = request.session.get("username") or ""
+        password = request.session.get("new_password") or ""
+        saved_token = request.session.get("token") or ""
+
+        has_username = len(username) > 0
+        has_new_password = len(password) > 0
+        has_saved_token = len(saved_token) > 0
+
+        if not has_username or not has_new_password or not has_saved_token:
+            messages.add_message(
+                request,
+                messages.WARNING,
+                "Requisição inválida, tente novamente",
+            )
+            return redirect("mail")
+
+        if not validate_token_password_data(request=request, data=data):
+            context = {}
+            context["enterprise_name"] = enterprise_name
+            context["new_password"] = data.get("new_password")
+            context["repeate_password"] = data.get("repeate_password")
+            return render(request, template_name, context)
+
+        self.change_ldap_password(
+            request=request,
+            username=username,
+            current_password=password,
+            data=data,
+        )
+
+        return redirect("password")
+
+    def change_ldap_password(
+        self,
+        request: HttpRequest,
+        username: str,
+        current_password: str,
+        data: QueryDict,
+    ):
+        new_password = data.get("new_password") or ""
+        ldap_search = SearchLDAPUser()
+        response = ldap_search.search_user_dn_by_username(username=username)
+
+        if "CN" not in response:
+            messages.add_message(request, messages.SUCCESS, response)
+            return False
+
+        user_dn = response
+        ad_reset_pass = ADResetPass()
+        error_message = ad_reset_pass.reset_password(
+            user_dn=user_dn,
+            old_password=current_password,
+            new_password=new_password,
+        )
+
+        if error_message != "":
+            messages.add_message(request, messages.ERROR, error_message)
+            return False
+
+        messages.add_message(
+            request,
+            messages.ERROR,
+            _("Successfully updated password"),
+        )
+        self.clear_session_data(request=request)
+        return True
+
+    def clear_session_data(self, request: HttpRequest):
+        request.session.clear()

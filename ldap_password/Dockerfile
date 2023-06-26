@@ -5,7 +5,7 @@ ENV PYTHONUNBUFFERED 1
 RUN mkdir /code
 WORKDIR /code
 
-RUN apt-get update && apt-get upgrade -y && apt-get install -y libsqlite3-dev libpq-dev python-dev build-essential python3-dev python2.7-dev libldap2-dev libsasl2-dev ldap-utils tox lcov valgrind ldap-utils
+RUN apt-get update && apt-get upgrade -y && apt-get install -y libsqlite3-dev libpq-dev build-essential python3-dev libldap2-dev libsasl2-dev ldap-utils tox lcov valgrind ldap-utils
 RUN pip install -U pip setuptools
 
 COPY requirements.txt /code/
