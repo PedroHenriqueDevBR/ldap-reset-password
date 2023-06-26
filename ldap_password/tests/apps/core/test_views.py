@@ -78,8 +78,7 @@ class PasswordViewTestCase(TestCase):
             "repeate_password": "abcd",
         }
         response = self.client.post(self.url, data=data)
-        expected_url = reverse("password")
-        self.assertRedirects(response, expected_url, status_code=302)
+        self.assertEqual(response.status_code, 200)
 
 
 class RequestMailViewTestCase(TestCase):

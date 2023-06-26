@@ -3,7 +3,8 @@ import os
 
 # Sobrescrever as configurações base aqui
 SECRET_KEY = os.environ.get("APP_SECRET_KEY")
-DEBUG = True
+DEBUG = False
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split()
 
 DATABASES = {
     "default": {

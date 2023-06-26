@@ -1,0 +1,120 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-06-12 11:38-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: apps/core/services/ldap/change_password.py:28
+msgid "LDAP Connection is empty"
+msgstr ""
+
+#: apps/core/services/ldap/change_password.py:37
+msgid "Rejected password update"
+msgstr ""
+
+#: apps/core/services/ldap/search_user.py:97
+#: apps/core/services/ldap/search_user.py:120
+msgid "Not found"
+msgstr ""
+
+#: apps/core/services/ldap/search_user.py:100
+#: apps/core/services/ldap/search_user.py:123
+msgid "Can not search user data in LDAP Server"
+msgstr ""
+
+#: apps/core/services/ldap/search_user.py:102
+#: apps/core/services/ldap/search_user.py:125
+msgid "Can not connect to the LDAP server"
+msgstr ""
+
+#: apps/core/services/ldap/search_user.py:118
+msgid "Mail not registered to user"
+msgstr ""
+
+#: apps/core/templates/mail.html:16 apps/core/templates/password.html:16
+msgid "InformYourCredentials"
+msgstr "Inform your credentials"
+
+#: apps/core/templates/mail.html:32 apps/core/templates/password.html:43
+#: apps/core/templates/token.html:37
+msgid "Submit"
+msgstr "Submit"
+
+#: apps/core/templates/password.html:26
+msgid "Username"
+msgstr "Username"
+
+#: apps/core/templates/password.html:30
+msgid "CurrentPassword"
+msgstr "Current password"
+
+#: apps/core/templates/password.html:34
+msgid "NewPassword"
+msgstr "New password"
+
+#: apps/core/templates/password.html:38
+msgid "RepeatPassword"
+msgstr "Repeat password"
+
+#: apps/core/templates/password.html:51
+msgid "ForgetPasswordQuestion"
+msgstr "Did you forget your password?"
+
+#: apps/core/templates/token.html:16
+msgid "ReceivedToken"
+msgstr ""
+
+#: apps/core/views.py:69
+msgid "Successfully updated password"
+msgstr ""
+
+#: apps/core/views.py:84 apps/core/views.py:138
+msgid "Username is required"
+msgstr ""
+
+#: apps/core/views.py:91
+#, fuzzy
+#| msgid "CurrentPassword"
+msgid "Current password is required"
+msgstr "Current password"
+
+#: apps/core/views.py:98
+msgid "New password is required"
+msgstr ""
+
+#: apps/core/views.py:105
+#, fuzzy
+#| msgid "RepeatPassword"
+msgid "Repeat password is required"
+msgstr "Repeat password"
+
+#: apps/core/views.py:113
+#, fuzzy
+#| msgid "CurrentPassword"
+msgid "Different passwords"
+msgstr "Current password"
+
+#: apps/core/views.py:173
+msgid "The token has been sent to your e-mail"
+msgstr ""
+
+#: apps/core/views.py:212
+msgid "Your new password has been sent to your e-mail"
+msgstr ""
+
+#: apps/core/views.py:256
+msgid "Invalid Token"
+msgstr ""

@@ -29,6 +29,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
 ]
 
 ROOT_URLCONF = "ldap_password.urls"
@@ -99,16 +100,16 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Meta settings
-LANGUAGE_CODE = "pt-br"
-TIME_ZONE = "America/Fortaleza"
+LANGUAGE_CODE = "en-us"
+TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
 # Static and Media settings
 STATIC_URL = "static/"
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_ROOT = os.path.join("staticfiles")
 MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_ROOT = os.path.join("mediafiles")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
