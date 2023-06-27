@@ -20,6 +20,13 @@ def index(request: HttpRequest):
     return redirect("password")
 
 
+def success(request: HttpRequest):
+    template_name = "success.html"
+    redirect_url = settings.SUCCESS_REDIRECT_URL
+    context = {"redirect_url": redirect_url}
+    return render(request, template_name, context)
+
+
 class PasswordView(View):
     def get(self, request: HttpRequest):
         enterprise_name = settings.ENTERPRISE_NAME
@@ -29,20 +36,28 @@ class PasswordView(View):
 
     def post(self, request: HttpRequest):
         template_name = "password.html"
-        enterprise_name = settings.ENTERPRISE_NAME
         data = request.POST
 
         if not validate_change_password_data(request, data):
-            context = {}
-            context["enterprise_name"] = enterprise_name
-            context["username"] = data.get("username")
-            context["current_password"] = data.get("current_password")
-            context["new_password"] = data.get("new_password")
-            context["repeate_password"] = data.get("repeate_password")
+            context = self.create_context(data=data)
             return render(request, template_name, context)
 
-        self.change_ldap_password(request, data)
-        return redirect("password")
+        success = self.change_ldap_password(request, data)
+        if not success:
+            context = self.create_context(data=data)
+            return render(request, template_name, context)
+
+        return redirect("success")
+
+    def create_context(self, data: QueryDict):
+        context = {}
+        enterprise_name = settings.ENTERPRISE_NAME
+        context["enterprise_name"] = enterprise_name
+        context["username"] = data.get("username")
+        context["current_password"] = data.get("current_password")
+        context["new_password"] = data.get("new_password")
+        context["repeate_password"] = data.get("repeate_password")
+        return context
 
     def change_ldap_password(self, request: HttpRequest, data: QueryDict):
         username = data.get("username") or ""
@@ -276,7 +291,7 @@ class ChangePasswordToken(View):
             context = self.create_context(data=data)
             return render(request, template_name, context)
 
-        return redirect("password")
+        return redirect("success")
 
     def create_context(self, data: QueryDict):
         enterprise_name = settings.ENTERPRISE_NAME
@@ -284,6 +299,7 @@ class ChangePasswordToken(View):
         context["enterprise_name"] = enterprise_name
         context["new_password"] = data.get("new_password")
         context["repeate_password"] = data.get("repeate_password")
+        return context
 
     def change_ldap_password(
         self,
@@ -312,11 +328,6 @@ class ChangePasswordToken(View):
             messages.add_message(request, messages.ERROR, error_message)
             return False
 
-        messages.add_message(
-            request,
-            messages.ERROR,
-            _("Successfully updated password"),
-        )
         self.clear_session_data(request=request)
         return True
 
