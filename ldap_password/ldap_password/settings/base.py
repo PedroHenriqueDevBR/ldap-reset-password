@@ -62,6 +62,7 @@ DATABASES = {
 
 # App metadata
 ENTERPRISE_NAME = ""
+SUCCESS_REDIRECT_URL = ""
 
 # AD Connection details
 LDAP_URL = ""

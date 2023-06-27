@@ -22,6 +22,7 @@ DATABASES = {
 
 # App metadata
 ENTERPRISE_NAME = env("ENTERPRISE_NAME")
+SUCCESS_REDIRECT_URL = env("SUCCESS_REDIRECT_URL")
 
 # AD Connection details
 LDAP_URL = env("LDAP_URL")
