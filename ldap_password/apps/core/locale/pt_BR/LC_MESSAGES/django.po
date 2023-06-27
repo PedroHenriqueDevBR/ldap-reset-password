@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-25 21:50-0500\n"
+"POT-Creation-Date: 2023-06-26 20:39-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,11 +46,12 @@ msgid "Mail not registered to user"
 msgstr "Usuário sem e-mail vinculado"
 
 #: apps/core/templates/mail.html:16 apps/core/templates/password.html:16
+#: apps/core/templates/token_password.html:16
 msgid "InformYourCredentials"
 msgstr "Informe as suas credenciais"
 
-#: apps/core/templates/mail.html:32 apps/core/templates/password.html:43
-#: apps/core/templates/token.html:37
+#: apps/core/templates/mail.html:32 apps/core/templates/password.html:53
+#: apps/core/templates/token.html:37 apps/core/templates/token_password.html:35
 msgid "Submit"
 msgstr "Enviar"
 
@@ -63,14 +64,20 @@ msgid "CurrentPassword"
 msgstr "Senha atual"
 
 #: apps/core/templates/password.html:34
+#: apps/core/templates/token_password.html:26
 msgid "NewPassword"
 msgstr "Nova senha"
 
-#: apps/core/templates/password.html:38
+#: apps/core/templates/password.html:41
+msgid "password_rules"
+msgstr "A senha deve conter no mínimo 8 (oito) caracteres, letras maiúsculas, letras minúscular e pelo menos um caractere especial"
+
+#: apps/core/templates/password.html:48
+#: apps/core/templates/token_password.html:30
 msgid "RepeatPassword"
 msgstr "Repetir nova senha"
 
-#: apps/core/templates/password.html:51
+#: apps/core/templates/password.html:61
 msgid "ForgetPasswordQuestion"
 msgstr "Esqueceu a sua senha?"
 
@@ -78,46 +85,48 @@ msgstr "Esqueceu a sua senha?"
 msgid "ReceivedToken"
 msgstr "Token recebido"
 
-#: apps/core/views.py:69
+#: apps/core/validators/validate_password_form.py:35
 msgid "minimum 8 characters"
 msgstr "Digite no mímino 8 (oito) caracteres"
 
-#: apps/core/views.py:82
+#: apps/core/validators/validate_password_form.py:48
 msgid "Use special character"
 msgstr "Use pelo menos 1 (um) caractere especial"
 
-#: apps/core/views.py:113
-msgid "Successfully updated password"
-msgstr "Sucesso na atualização de senha"
-
-#: apps/core/views.py:128 apps/core/views.py:189
+#: apps/core/validators/validate_password_form.py:65 apps/core/views.py:97
 msgid "Username is required"
 msgstr "Username obrigatório"
 
-#: apps/core/views.py:135
+#: apps/core/validators/validate_password_form.py:72
 msgid "Current password is required"
 msgstr "Senha atual obrigatória"
 
-#: apps/core/views.py:142
+#: apps/core/validators/validate_password_form.py:79
+#: apps/core/validators/validate_password_form.py:116
 msgid "New password is required"
 msgstr "Nova senha é obrigatória"
 
-#: apps/core/views.py:149
+#: apps/core/validators/validate_password_form.py:86
+#: apps/core/validators/validate_password_form.py:123
 msgid "Repeat password is required"
 msgstr "Repetir nova senha"
 
-#: apps/core/views.py:157
+#: apps/core/validators/validate_password_form.py:94
+#: apps/core/validators/validate_password_form.py:131
 msgid "Different passwords"
 msgstr "Senha diferentes"
 
-#: apps/core/views.py:224
+#: apps/core/views.py:73 apps/core/views.py:311
+msgid "Successfully updated password"
+msgstr "Sucesso na atualização de senha"
+
+#: apps/core/views.py:132
 msgid "The token has been sent to your e-mail"
 msgstr "O token foi enviado para o seu e-mail"
 
-#: apps/core/views.py:264
-msgid "Your new password has been sent to your e-mail"
-msgstr "A nova senha foi enviada para o seu e-mail"
-
-#: apps/core/views.py:308
+#: apps/core/views.py:190 apps/core/views.py:261
 msgid "Invalid Token"
 msgstr "Token inválido"
+
+#~ msgid "Your new password has been sent to your e-mail"
+#~ msgstr "A nova senha foi enviada para o seu e-mail"

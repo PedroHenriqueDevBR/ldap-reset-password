@@ -5,6 +5,7 @@ from apps.core.views import (
     PasswordView,
     RequestMailView,
     ConfirmTokenView,
+    ChangePasswordToken,
 )
 
 
@@ -13,4 +14,9 @@ urlpatterns = [
     path("password", PasswordView.as_view(), name="password"),
     path("request/mail", RequestMailView.as_view(), name="mail"),
     path("request/token", ConfirmTokenView.as_view(), name="token"),
+    path(
+        "request/token/password",
+        ChangePasswordToken.as_view(),
+        name="token_password",
+    ),
 ]

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-12 11:38-0500\n"
+"POT-Creation-Date: 2023-06-26 20:39-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -45,11 +45,12 @@ msgid "Mail not registered to user"
 msgstr ""
 
 #: apps/core/templates/mail.html:16 apps/core/templates/password.html:16
+#: apps/core/templates/token_password.html:16
 msgid "InformYourCredentials"
 msgstr "Inform your credentials"
 
-#: apps/core/templates/mail.html:32 apps/core/templates/password.html:43
-#: apps/core/templates/token.html:37
+#: apps/core/templates/mail.html:32 apps/core/templates/password.html:53
+#: apps/core/templates/token.html:37 apps/core/templates/token_password.html:35
 msgid "Submit"
 msgstr "Submit"
 
@@ -62,59 +63,72 @@ msgid "CurrentPassword"
 msgstr "Current password"
 
 #: apps/core/templates/password.html:34
+#: apps/core/templates/token_password.html:26
 msgid "NewPassword"
 msgstr "New password"
 
-#: apps/core/templates/password.html:38
+#: apps/core/templates/password.html:41
+msgid "password_rules"
+msgstr "The password should has 8 characters, Uppercase letters, lowercase letters and special character"
+
+#: apps/core/templates/password.html:48
+#: apps/core/templates/token_password.html:30
 msgid "RepeatPassword"
 msgstr "Repeat password"
 
-#: apps/core/templates/password.html:51
+#: apps/core/templates/password.html:61
 msgid "ForgetPasswordQuestion"
 msgstr "Did you forget your password?"
 
 #: apps/core/templates/token.html:16
 msgid "ReceivedToken"
+msgstr "Received Token"
+
+#: apps/core/validators/validate_password_form.py:35
+msgid "minimum 8 characters"
+msgstr "Minimum 8 characters"
+
+#: apps/core/validators/validate_password_form.py:48
+msgid "Use special character"
 msgstr ""
 
-#: apps/core/views.py:69
-msgid "Successfully updated password"
-msgstr ""
-
-#: apps/core/views.py:84 apps/core/views.py:138
+#: apps/core/validators/validate_password_form.py:65 apps/core/views.py:97
 msgid "Username is required"
 msgstr ""
 
-#: apps/core/views.py:91
+#: apps/core/validators/validate_password_form.py:72
 #, fuzzy
 #| msgid "CurrentPassword"
 msgid "Current password is required"
 msgstr "Current password"
 
-#: apps/core/views.py:98
+#: apps/core/validators/validate_password_form.py:79
+#: apps/core/validators/validate_password_form.py:116
 msgid "New password is required"
 msgstr ""
 
-#: apps/core/views.py:105
+#: apps/core/validators/validate_password_form.py:86
+#: apps/core/validators/validate_password_form.py:123
 #, fuzzy
 #| msgid "RepeatPassword"
 msgid "Repeat password is required"
 msgstr "Repeat password"
 
-#: apps/core/views.py:113
+#: apps/core/validators/validate_password_form.py:94
+#: apps/core/validators/validate_password_form.py:131
 #, fuzzy
 #| msgid "CurrentPassword"
 msgid "Different passwords"
 msgstr "Current password"
 
-#: apps/core/views.py:173
+#: apps/core/views.py:73 apps/core/views.py:311
+msgid "Successfully updated password"
+msgstr ""
+
+#: apps/core/views.py:132
 msgid "The token has been sent to your e-mail"
 msgstr ""
 
-#: apps/core/views.py:212
-msgid "Your new password has been sent to your e-mail"
-msgstr ""
-
-#: apps/core/views.py:256
+#: apps/core/views.py:190 apps/core/views.py:261
 msgid "Invalid Token"
 msgstr ""
