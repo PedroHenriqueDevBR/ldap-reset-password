@@ -19,6 +19,7 @@ DATABASES = {
 
 # App metadata
 ENTERPRISE_NAME = os.environ.get("ENTERPRISE_NAME")
+SUCCESS_REDIRECT_URL = os.environ.get("SUCCESS_REDIRECT_URL")
 
 # AD Connection details
 LDAP_URL = os.environ.get("LDAP_URL")
