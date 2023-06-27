@@ -2,9 +2,6 @@ from django.contrib import messages
 from django.http import HttpRequest, QueryDict
 from django.utils.translation import gettext as _
 
-from apps.core.services.ldap.change_password import ADResetPass
-from apps.core.services.ldap.search_user import SearchLDAPUser
-
 
 def password_valid_complexity(request: HttpRequest, password: str):
     is_valid = True
