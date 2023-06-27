@@ -245,7 +245,6 @@ class ChangePasswordToken(View):
     def post(self, request: HttpRequest):
         data = request.POST
         template_name = "token_password.html"
-        enterprise_name = settings.ENTERPRISE_NAME
         username = request.session.get("username") or ""
         password = request.session.get("new_password") or ""
         saved_token = request.session.get("token") or ""
@@ -263,20 +262,28 @@ class ChangePasswordToken(View):
             return redirect("mail")
 
         if not validate_token_password_data(request=request, data=data):
-            context = {}
-            context["enterprise_name"] = enterprise_name
-            context["new_password"] = data.get("new_password")
-            context["repeate_password"] = data.get("repeate_password")
+            context = self.create_context(data=data)
             return render(request, template_name, context)
 
-        self.change_ldap_password(
+        success = self.change_ldap_password(
             request=request,
             username=username,
             current_password=password,
             data=data,
         )
 
+        if not success:
+            context = self.create_context(data=data)
+            return render(request, template_name, context)
+
         return redirect("password")
+
+    def create_context(self, data: QueryDict):
+        enterprise_name = settings.ENTERPRISE_NAME
+        context = {}
+        context["enterprise_name"] = enterprise_name
+        context["new_password"] = data.get("new_password")
+        context["repeate_password"] = data.get("repeate_password")
 
     def change_ldap_password(
         self,
