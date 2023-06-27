@@ -258,7 +258,7 @@ class ChangePasswordToken(View):
             messages.add_message(
                 request,
                 messages.WARNING,
-                "Requisição inválida, tente novamente",
+                _("Invalid Token"),
             )
             return redirect("mail")
 
