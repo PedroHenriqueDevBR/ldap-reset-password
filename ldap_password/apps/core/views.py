@@ -82,11 +82,6 @@ class PasswordView(View):
             messages.add_message(request, messages.ERROR, error_message)
             return False
 
-        messages.add_message(
-            request,
-            messages.ERROR,
-            _("Successfully updated password"),
-        )
         return True
 
 
