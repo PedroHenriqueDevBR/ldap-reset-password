@@ -29,7 +29,7 @@ class SearchLDAPUser:
             host=self.ldap_url,
             port=self.ldap_port,
             get_info=ALL,
-            use_ssl=True if self.ldap_url == 636 else False,
+            use_ssl=True if self.ldap_port == 636 else False,
         )
         self.ldap = Connection(
             ldap_server,

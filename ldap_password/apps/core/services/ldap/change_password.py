@@ -61,6 +61,7 @@ class ADResetPass:
         username = self.ldap_username
         password = self.ldap_password
         domain = self.ldap_logon_domain_name
+
         if "@" in username or "\\" in username or "CN=" in username:
             self.connection.user = username
         else:
@@ -70,18 +71,7 @@ class ADResetPass:
                 self.connection.user = f"{username}@{domain}"
 
         self.connection.password = password
-        svc_account = self.ldap_username == username
-
         if not self.connection.bind():
-            if svc_account:
-                print("error", "The service account failed to login")
-                return None
-            else:
-                print('The user "%s" failed to login', self.connection.user)
-                print("Username or password is incorrect. Please try again")
-                return None
+            print("error", "The service account failed to login")
         else:
-            if svc_account:
-                print("The service account logged in successfully")
-            else:
-                print("The user logged in successfully")
+            print("The service account logged in successfully")
