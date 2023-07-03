@@ -170,8 +170,9 @@ class ConfirmTokenView(View):
         if not self.validate_token(request, received_token, username):
             return redirect("token")
 
-        if not self.update_user_password(request, username, new_password):
-            return redirect("token")
+        request.session["new_password"] = new_password
+        # if not self.update_user_password(request, username, new_password):
+        #     return redirect("token")
 
         return redirect("token_password")
 
@@ -226,7 +227,6 @@ class ConfirmTokenView(View):
             messages.add_message(request, messages.ERROR, error_message)
             return False
 
-        request.session["new_password"] = password
         return True
 
 
@@ -256,14 +256,12 @@ class ChangePasswordToken(View):
         data = request.POST
         template_name = "token_password.html"
         username = request.session.get("username") or ""
-        password = request.session.get("new_password") or ""
         saved_token = request.session.get("token") or ""
 
         has_username = len(username) > 0
-        has_new_password = len(password) > 0
         has_saved_token = len(saved_token) > 0
 
-        if not has_username or not has_new_password or not has_saved_token:
+        if not has_username or not has_saved_token:
             messages.add_message(
                 request,
                 messages.WARNING,
@@ -278,7 +276,6 @@ class ChangePasswordToken(View):
         success = self.change_ldap_password(
             request=request,
             username=username,
-            current_password=password,
             data=data,
         )
 
@@ -300,7 +297,6 @@ class ChangePasswordToken(View):
         self,
         request: HttpRequest,
         username: str,
-        current_password: str,
         data: QueryDict,
     ):
         new_password = data.get("new_password") or ""
@@ -315,7 +311,6 @@ class ChangePasswordToken(View):
         ad_reset_pass = ADResetPass()
         error_message = ad_reset_pass.reset_password(
             user_dn=user_dn,
-            old_password=current_password,
             new_password=new_password,
         )
 

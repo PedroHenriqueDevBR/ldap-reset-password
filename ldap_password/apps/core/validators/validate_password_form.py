@@ -23,13 +23,15 @@ def password_valid_complexity(request: HttpRequest, password: str):
         "=",
         ">",
         "@",
+        ".",
+        "_",
     ]
-    if len(password) < 8:
+    if len(password) < 9:
         is_valid = False
         messages.add_message(
             request,
             messages.ERROR,
-            _("minimum 8 characters"),
+            _("minimum 9 characters"),
         )
 
     for letter in password:
