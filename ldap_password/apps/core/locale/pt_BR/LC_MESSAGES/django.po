@@ -24,7 +24,7 @@ msgstr "Sem conexão com o servidor"
 
 #: apps/core/services/ldap/change_password.py:37
 msgid "Rejected password update"
-msgstr "Alteração de senha recusada."
+msgstr "Senha informada não satisfaz os requisitos de senha do servidor."
 
 #: apps/core/services/ldap/search_user.py:97
 #: apps/core/services/ldap/search_user.py:120
@@ -73,7 +73,7 @@ msgstr "Nova senha"
 msgid "password_rules"
 msgstr ""
 "A senha deve conter no mínimo 9 (nove) caracteres, letras maiúsculas, letras "
-"minúsculas e pelo menos um caractere especial"
+"minúsculas e pelo menos um caractere especial. A nova senha deve ser diferente das senhas já utilzadas."
 
 #: apps/core/templates/password.html:48
 #: apps/core/templates/token_password.html:40
