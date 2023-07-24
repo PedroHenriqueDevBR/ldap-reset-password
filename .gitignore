@@ -388,3 +388,5 @@ ldap_password/staticfiles/css/font-awesome-all.min.css
 ldap_password/staticfiles/images/logo.png
 ldap_password/staticfiles/js/bootstrap.bundle.min.js
 ldap_password/staticfiles/js/jquery.min.js
+ldap_password/dockerfiles/nginx/cert/ca.cer
+ldap_password/dockerfiles/nginx/cert/ca.key
