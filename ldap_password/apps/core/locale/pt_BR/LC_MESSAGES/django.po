@@ -72,8 +72,9 @@ msgstr "Nova senha"
 #: apps/core/templates/token_password.html:37
 msgid "password_rules"
 msgstr ""
-"A senha deve conter no mínimo 9 (nove) caracteres, letras maiúsculas, letras "
-"minúsculas e pelo menos um caractere especial. A nova senha deve ser diferente das senhas já utilzadas."
+"A senha deve conter no mínimo 9 (nove) caracteres, letras maiúsculas e "
+"minúsculas, pelo menos um caractere especial, deve ser diferente das senhas já utilzadas "
+"e não pode conter o seu nome na senha."
 
 #: apps/core/templates/password.html:48
 #: apps/core/templates/token_password.html:40
