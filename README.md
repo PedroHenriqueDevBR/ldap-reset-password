@@ -258,3 +258,13 @@ DEFAULT_FROM_EMAIL = os.environ.get("EMAIL_DEFAULT_FROM")
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 ```
+<h3 id="compile-messages">Compile messages</h3>
+
+```bash
+# Generate messages
+python manage.py makemessages -l pt_BR -i venv -i staticfiles -i mediafiles
+python manage.py makemessages -l en_US -i venv -i staticfiles -i mediafiles
+
+# Compile messages
+python manage.py compilemessages -i venv -i staticfiles -i mediafiles
+```

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-30 09:02-0500\n"
+"POT-Creation-Date: 2023-08-25 07:51-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -45,45 +45,45 @@ msgstr "Erro na conexão com o servidor"
 msgid "Mail not registered to user"
 msgstr "Usuário sem e-mail vinculado"
 
-#: apps/core/templates/mail.html:16 apps/core/templates/password.html:16
+#: apps/core/templates/mail.html:16 apps/core/templates/password.html:23
 #: apps/core/templates/token_password.html:16
 msgid "InformYourCredentials"
 msgstr "Informe as suas credenciais"
 
-#: apps/core/templates/mail.html:32 apps/core/templates/password.html:53
+#: apps/core/templates/mail.html:32 apps/core/templates/password.html:70
 #: apps/core/templates/token.html:37 apps/core/templates/token_password.html:45
 msgid "Submit"
 msgstr "Enviar"
 
-#: apps/core/templates/password.html:26
+#: apps/core/templates/password.html:33
 msgid "Username"
 msgstr "Username"
 
-#: apps/core/templates/password.html:30
+#: apps/core/templates/password.html:37
 msgid "CurrentPassword"
 msgstr "Senha atual"
 
-#: apps/core/templates/password.html:34
+#: apps/core/templates/password.html:44
 #: apps/core/templates/token_password.html:26
 msgid "NewPassword"
 msgstr "Nova senha"
 
-#: apps/core/templates/password.html:45
+#: apps/core/templates/password.html:59
 #: apps/core/templates/token_password.html:37
 msgid "password_rules"
 msgstr ""
 "A senha deve conter no mínimo 9 (nove) caracteres, letras maiúsculas e "
-"minúsculas, pelo menos um caractere especial, deve ser diferente das senhas já utilzadas "
-"e não pode conter o seu nome na senha."
+"minúsculas, pelo menos um caractere especial, deve ser diferente das senhas "
+"já utilzadas e não pode conter o seu nome na senha."
 
-#: apps/core/templates/password.html:48
+#: apps/core/templates/password.html:62
 #: apps/core/templates/token_password.html:40
 msgid "RepeatPassword"
 msgstr "Repetir nova senha"
 
-#: apps/core/templates/password.html:61
+#: apps/core/templates/password.html:78
 msgid "ForgetPasswordQuestion"
-msgstr "Esqueceu a sua senha?"
+msgstr "Recuperar senha"
 
 #: apps/core/templates/success.html:14
 msgid "success_title"
@@ -136,7 +136,7 @@ msgstr "Senha diferentes"
 msgid "The token has been sent to your e-mail"
 msgstr "O token foi enviado para o seu e-mail"
 
-#: apps/core/views.py:201 apps/core/views.py:270
+#: apps/core/views.py:201 apps/core/views.py:268
 msgid "Invalid Token"
 msgstr "Token inválido"
 
