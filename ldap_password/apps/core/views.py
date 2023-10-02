@@ -17,7 +17,8 @@ from apps.core.validators.validate_password_form import (
 
 
 def index(request: HttpRequest):
-    return redirect("password")
+    template_name = "options.html"
+    return render(request, template_name)
 
 
 def success(request: HttpRequest):
