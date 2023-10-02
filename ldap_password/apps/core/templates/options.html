@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}Password{% endblock title %}
+
+{% block body %}
+
+<style>
+    .password-eye-icon {
+        margin-left: -30px !important;
+        cursor: pointer;
+    }
+
+    @media only screen and (max-width: 700px)  {
+        #container-info {
+            margin: 0 !important;
+        }
+    }
+</style>
+
+<div class="password_container background_dpe">
+    <section class="bg-white px-5 py-4 my-4 rounded shadow" id="container-info">
+        <div class="header">
+            <img src="{% static 'images/logo.png' %}" width="50">
+            <div class="title">
+                <h4>Defensoria Pública do Estado do Piauí</h4>
+                <p>Selecione uma opção</p>
+            </div>
+        </div>
+        <hr>
+
+        <div class="container">
+            <div class="row">
+                <div class="col my-3">
+                    <h1>Redefinir senha</h1>
+                    <p><strong>Selecione essa opção se:</strong></p>
+                    <ul class="list-group list-group-flush list-group-numbered mb-4">
+                        <li class="list-group-item">Recebi minha senha de acesso e preciso validá-la;</li>
+                        <li class="list-group-item">Sei minha senha atual e quero trocá-la.</li>
+                    </ul>
+                    <a href="{% url 'password' %}" class="btn btn-outline-success">Redefinir senha</a>
+                </div>
+
+                <div class="col  my-3">
+                    <h1>Esqueci minha senha</h1>
+                    <p><strong>Selecione essa opção se:</strong></p>
+                    <ul class="list-group list-group-flush list-group-numbered">
+                        <li class="list-group-item">Esqueci da minha senha atual.</li>
+                    </ul>
+                    <p class="mt-3"><strong>Observações:</strong></p>
+                    <ul class="list-group list-group-flush list-group-numbered mb-4">
+                        <li class="list-group-item">para recuperar sua senha de acesso por este canal é necessário que
+                            você tenha acesso a sua conta institucional.</li>
+                        <li class="list-group-item">Caso não tenha acesso ao email institucional ou tenha dificuldade
+                            durante o processo de recuperação, por gentileza, entre em contato com a COTI através do
+                            contato: <br>
+                            <a href="tel:+5586994702906">(86) 99470-2906</a> <br>
+                            <a href="mail:cti@defensoria.pi.def.br">cti@defensoria.pi.def.br</a>
+                        </li>
+                    </ul>
+                    <a href="{% url 'mail' %}" class="btn btn-outline-success">Esqueci minha senha</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+{% endblock body %}
