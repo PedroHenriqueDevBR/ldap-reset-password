@@ -60,8 +60,14 @@ class PasswordView(View):
         context["repeate_password"] = data.get("repeate_password")
         return context
 
+    def format_username(self, username):
+        if "@" not in username:
+            return username
+        username_splited = username.split("@")
+        return username_splited[0]
+
     def change_ldap_password(self, request: HttpRequest, data: QueryDict):
-        username = data.get("username") or ""
+        username = self.format_username(data.get("username") or "")
         current_password = data.get("current_password") or ""
         new_password = data.get("new_password") or ""
         ldap_search = SearchLDAPUser()
