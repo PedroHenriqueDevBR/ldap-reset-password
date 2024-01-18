@@ -3,6 +3,7 @@ from django.urls import path
 from apps.core.views import (
     index,
     success,
+    ValidateExpiredPasswordView,
     PasswordView,
     RequestMailView,
     ConfirmTokenView,
@@ -16,6 +17,11 @@ urlpatterns = [
     path("password", PasswordView.as_view(), name="password"),
     path("request/mail", RequestMailView.as_view(), name="mail"),
     path("request/token", ConfirmTokenView.as_view(), name="token"),
+    path(
+        "request/expired",
+        ValidateExpiredPasswordView.as_view(),
+        name="expired",
+    ),
     path(
         "request/token/password",
         ChangePasswordToken.as_view(),
