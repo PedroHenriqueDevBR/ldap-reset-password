@@ -1,5 +1,6 @@
 import json
 from typing import Optional
+from datetime import datetime, timedelta
 
 import ldap3
 from django.conf import settings
@@ -50,6 +51,7 @@ class SearchLDAPUser:
             attributes=[
                 "uid",
                 "mail",
+                "accountExpires",
             ],
         )
 
@@ -116,6 +118,34 @@ class SearchLDAPUser:
             raise AttributeError
         except AttributeError:
             return _("Mail not registered to user")
+        except IndexError:
+            msg = _("Not found")
+            return f"{username} {msg}!"
+        except ConnectionError:
+            return _("Can not search user data in LDAP Server")
+        except LDAPSocketOpenError:
+            return _("Can not connect to the LDAP server")
+
+    def verify_user_expided_password_by_username(self, username: str) -> str:
+        try:
+            response = self._search(username=username)
+            if response is None:
+                raise IndexError
+
+            attrs = response["attributes"]
+            if "accountExpires" in attrs:
+                now = datetime.now()
+                now_timestamp = now.timestamp()
+                account_expires = attrs["accountExpires"][0]
+                diference = timedelta(1)
+                expire_date = datetime.fromisoformat(account_expires)
+                expire_date = expire_date - diference  # remove 1 day from date
+                expire_timestamp = expire_date.timestamp()
+                return str(now_timestamp >= expire_timestamp)
+
+            raise AttributeError
+        except AttributeError:
+            return _("Expires date not registered to user")
         except IndexError:
             msg = _("Not found")
             return f"{username} {msg}!"

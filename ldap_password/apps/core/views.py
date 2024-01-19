@@ -3,6 +3,7 @@ from uuid import uuid4
 from django.conf import settings
 from django.contrib import messages
 from django.http import HttpRequest, QueryDict
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.utils.translation import gettext as _
 from django.views import View
@@ -26,6 +27,24 @@ def success(request: HttpRequest):
     redirect_url = settings.SUCCESS_REDIRECT_URL
     context = {"redirect_url": redirect_url}
     return render(request, template_name, context)
+
+
+class ValidateExpiredPasswordView(View):
+    def post(self, request: HttpRequest):
+        data = request.POST
+        if not data.get("username"):
+            return JsonResponse({"return": False}, safe=True, status=400)
+
+        username = data.get("username") or ""
+        ldap_search = SearchLDAPUser()
+        response = ldap_search.verify_user_expided_password_by_username(
+            username=username,
+        )
+
+        if response == "True":
+            return JsonResponse({"return": True}, safe=True, status=200)
+
+        return JsonResponse({"return": False}, status=401)
 
 
 class PasswordView(View):
