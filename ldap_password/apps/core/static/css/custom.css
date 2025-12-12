@@ -125,7 +125,7 @@
 }
 
 .password_form_content {
-    width: 405px;
+    width: 600px;
 }
 
 
@@ -209,6 +209,10 @@ form>label {
 
 .header .title * {
     margin: 0 !important;
+}
+
+.rules-list {
+    list-style-type: circle;
 }
 
 @media only screen and (max-width: 500px) {

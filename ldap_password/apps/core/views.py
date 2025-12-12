@@ -105,7 +105,12 @@ class PasswordView(View):
         )
 
         if error_message != "":
-            messages.add_message(request, messages.ERROR, error_message)
+            messages.add_message(
+                request,
+                messages.ERROR,
+                error_message,
+                extra_tags="alert-danger",
+            )
             return False
 
         return True

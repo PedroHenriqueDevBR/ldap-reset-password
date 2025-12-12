@@ -1,8 +1,60 @@
+import logging
+import re
 from typing import Optional
 
 import ldap3
 from django.conf import settings
 from django.utils.translation import gettext as _
+
+logger = logging.getLogger(__name__)
+
+
+AD_DATA_MAP = {
+    "52d": "Senha não atende à política (complexidade/tamanho/histórico) ou outra restrição.",
+    "773": "Usuário deve trocar a senha no próximo logon (pwdLastSet=0).",
+    "775": "Conta bloqueada (lockout).",
+    "533": "Conta desabilitada.",
+    "701": "Conta expirada.",
+    "532": "Senha expirada.",
+    "5": "Acesso negado (permissões insuficientes para resetar).",
+    "56": "Senha atual incorreta (quando troca exige old_password).",
+}
+
+
+def explain_ad_ldap_result(result: dict) -> str:
+    msg = (result or {}).get("message") or ""
+    m = re.search(r"data\s+([0-9a-fA-F]{1,8})", msg)
+    if not m:
+        return msg.strip() or "Sem detalhes no 'message' do LDAP."
+    code = m.group(1).lstrip("0").lower() or "0"
+    return f"Causa: {AD_DATA_MAP.get(code, 'código data desconhecido')} (data={code})"
+
+
+WIN32_MAP = {
+    "0000052d": "A sua senha não pode ser uma senha usada anteriormente e não pode conter partes do seu nome de usuário ou nome completo.",
+    "00000773": "Usuário deve trocar a senha no próximo logon",
+    "00000775": "Conta bloqueada",
+    "00000056": "Erro de autenticação: senha incorreta",
+    "00000533": "Conta desabilitada",
+    "00000701": "Conta expirada",
+    "00000532": "Senha expirada",
+    "00000005": "Acesso negado",
+}
+
+
+def explain_ad_message(result: dict) -> str:
+    msg = (result or {}).get("message") or ""
+    match_1 = re.search(r"\b([0-9a-fA-F]{8})\b", msg)
+
+    if match_1:
+        code8 = match_1.group(1).lower()
+        if code8 in WIN32_MAP:
+            return f"Causa: {WIN32_MAP[code8]}"
+
+    match_2 = re.search(r"data\s+([0-9a-fA-F]{1,8})", msg)
+    if match_2:
+        return f"Causa: data={match_2.group(1).lower()}"
+    return msg.strip() or "Sem detalhes no 'message' do LDAP."
 
 
 class ADResetPass:
@@ -27,14 +79,17 @@ class ADResetPass:
         if self.connection is None:
             return _("LDAP Connection is empty")
 
-        response = self.connection.extend.microsoft.modify_password(
-            user_dn,
-            new_password,
-            old_password=old_password,
+        ok = self.connection.extend.microsoft.modify_password(
+            user_dn, new_password, old_password=old_password
         )
 
-        if not response:
-            return _("Rejected password update")
+        if not ok:
+            result = self.connection.result or {}
+            logger.warning(
+                "AD password rejected",
+                extra={"user_dn": user_dn, "ldap_result": result},
+            )
+            return explain_ad_message(result)
 
         return ""
 
@@ -43,6 +98,7 @@ class ADResetPass:
             host=self.ldap_url,
             port=self.ldap_port,
             use_ssl=True,
+            get_info=ldap3.ALL,
         )
         self.connection = ldap3.Connection(server=server)
         self.connection.authentication = ldap3.NTLM
